@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "漏れなくん",
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="geist-sans geist-mono">{children}</body>
+      <body className="geist-sans geist-mono">
+        <SessionProvider>{children}</SessionProvider>
+      </body>
     </html>
   );
 }

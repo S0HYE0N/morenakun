@@ -1,22 +1,55 @@
 "use client";
 
 import { WORDS } from "@/assets/strings/words";
-import Image from "next/image";
+import { SENTENCES } from "@/assets/strings/sentences";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { isValidEmail, isValidPassword } from "@/utils/validation";
+import Image from "next/image";
 
-export default function LoginPage(props: { searchParams: { callbackUrl: string | undefined } }) {
+export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [language, setLanguage] = useState("ko");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
+  const callbackUrl = "/dashboard";
+
+  const params = useSearchParams();
+  const error = params.get("error");
+  const router = useRouter();
+
+  // ページ言語設定（日⇔韓）
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === "ko" ? "ja" : "ko"));
   };
 
+  // ログイン（ローカル認証）
   const handleLogin = async () => {
-    signIn("credentials", { email, password });
+    if (!email || !password) {
+      setErrorMessage(SENTENCES.loginEmptyErrorMessage);
+      return false;
+    }
+
+    if (!isValidEmail(email) || !isValidPassword(password)) {
+      setErrorMessage(SENTENCES.loginInvalidErrorMessage);
+      return false;
+    }
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+      callbackUrl,
+    });
+
+    if (res?.error) {
+      setErrorMessage(SENTENCES.loginInvalidErrorMessage);
+    } else {
+      router.push(res.url!);
+    }
   };
 
   return (
@@ -84,6 +117,9 @@ export default function LoginPage(props: { searchParams: { callbackUrl: string |
             {WORDS.forgotPassword}
           </button>
         </div> */}
+        {(errorMessage || error) && (
+          <p className="text-red-500 text-xs mt-2">{errorMessage || SENTENCES.loginInvalidErrorMessage}</p>
+        )}
         <button type="button" className="rounded-full bg-black text-white w-full p-2 mt-4" onClick={handleLogin}>
           {WORDS.loginButton}
         </button>
