@@ -6,4 +6,10 @@ export const WORDS = {
   others: "または",
   loginButton: "ログイン",
   googleLogin: "Googleでログイン",
+  dashboard: "Dashboard",
+  employees: "Employees",
+  assets: "Assets",
+  tasks: "Tasks",
+  settings: "設定",
+  logout: "ログアウト",
 };
