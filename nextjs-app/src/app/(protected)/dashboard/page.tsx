@@ -1,21 +1,22 @@
-"use client";
+import { WORDS } from "@/assets/strings/words";
+import PageLayout from "@/components/page/PageLayout";
+import StatsCards from "@/components/page/StatsCards";
 
-import { LogoutButton } from "@/components/AuthButton";
-import { useSession } from "next-auth/react";
+const stats = [
+  { icon: "icon_person.svg", label: WORDS.totalNumberOfEmployees, value: 5 },
+  { icon: "icon_calendar.svg", label: WORDS.recentEvents, value: 0 },
+  { icon: "icon_check.svg", label: WORDS.ongoingTasks, value: 2 },
+  { icon: "icon_dangerMark.svg", label: WORDS.delayedTasks, value: 9, color: "#EF4444" },
+];
 
 export default function DashboardPage() {
-  const { status, data: session } = useSession();
-
-  if (status === "loading") {
-    return <div>loading...</div>;
-  }
-
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to your dashboard!</p>
-      {status === "authenticated" && <div>hello, {session?.user?.name}</div>}
-      <LogoutButton />
-    </div>
+    <PageLayout title={WORDS.dashboard} description={WORDS.dashboardDescription} stats={<StatsCards stats={stats} />}>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <section className="bg-white border rounded-lg p-4 shadow-sm">{WORDS.recentEvents}</section>
+        <section className="bg-white border rounded-lg p-4 shadow-sm">{WORDS.emergencyTasks}</section>
+        <section className="bg-white border rounded-lg p-4 shadow-sm">{WORDS.contractExpirationAlerts}</section>
+      </div>
+    </PageLayout>
   );
 }

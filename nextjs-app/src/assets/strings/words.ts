@@ -12,4 +12,11 @@ export const WORDS = {
   tasks: "Tasks",
   settings: "設定",
   logout: "ログアウト",
+  dashboardDescription: "人事管理システム全体の現況",
+  totalNumberOfEmployees: "総従業員数",
+  recentEvents: "最近のイベント",
+  ongoingTasks: "進行中のタスク",
+  delayedTasks: "遅延タスク",
+  emergencyTasks: "緊急タスク",
+  contractExpirationAlerts: "契約満了アラート",
 };
